@@ -7,11 +7,12 @@ const priorityColorMapping = {
   Low: 'gray',
 };
 
-export default function Todo({ name, prioriry }) {
-  const [checked, setChecked] = useState(false);
+export default function Todo({ name, prioriry, completed, id, onToogleTodo }) {
+  const [checked, setChecked] = useState(completed);
 
   const toggleCheckbox = () => {
     setChecked(!checked);
+    onToogleTodo(id)
   };
 
   return (

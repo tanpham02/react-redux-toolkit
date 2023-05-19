@@ -1,8 +1,42 @@
-import { Col, Row, Input, Typography, Radio, Select, Tag } from 'antd';
-
-const { Search } = Input;
+import {
+  Col,
+  Row,
+  Input,
+  Typography,
+  Radio,
+  Select,
+  Tag
+} from 'antd'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+  search,
+  status,
+  priorities
+} from './filterSlice'
 
 export default function Filters() {
+  const { Search } = Input
+  const dispatch = useDispatch()
+  const [searchText, setSearchText] = useState('')
+  const [statusText, setStatusText] = useState('All')
+
+  const handleChangeSearch = e => {
+    setSearchText(e.target.value)
+    dispatch(search(e.target.value))
+  }
+
+  const handleChangeStatus = e => {
+    setStatusText(e.target.value)
+    dispatch(status(e.target.value))
+  }
+
+  const handleChangePriorities = value => {
+    dispatch(priorities(value))
+  }
+
+
+
   return (
     <Row justify='center'>
       <Col span={24}>
@@ -11,7 +45,11 @@ export default function Filters() {
         >
           Search
         </Typography.Paragraph>
-        <Search placeholder='input search text' />
+        <Search
+          placeholder='Input search text'
+          value={searchText}
+          onChange={handleChangeSearch}
+        />
       </Col>
       <Col sm={24}>
         <Typography.Paragraph
@@ -19,7 +57,7 @@ export default function Filters() {
         >
           Filter By Status
         </Typography.Paragraph>
-        <Radio.Group>
+        <Radio.Group value={statusText} onChange={handleChangeStatus}>
           <Radio value='All'>All</Radio>
           <Radio value='Completed'>Completed</Radio>
           <Radio value='Todo'>To do</Radio>
@@ -36,8 +74,9 @@ export default function Filters() {
           allowClear
           placeholder='Please select'
           style={{ width: '100%' }}
+          onChange={handleChangePriorities}
         >
-          <Select.Option value='High' label='High'>
+          <Select.Option value='High' label='High' >
             <Tag color='red'>High</Tag>
           </Select.Option>
           <Select.Option value='Medium' label='Medium'>
@@ -49,5 +88,5 @@ export default function Filters() {
         </Select>
       </Col>
     </Row>
-  );
+  )
 }
