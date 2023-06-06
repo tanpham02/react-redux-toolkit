@@ -8,35 +8,44 @@ import {
 } from 'antd';
 import Todo from '../Todo';
 import { useDispatch, useSelector } from 'react-redux'
-import { addTodo, toogleTodo } from './todoSlice'
-import { useState, useCallback, useEffect } from 'react'
+import {
+  getAllTodosThunk,
+  addTodoThunk,
+  toggleTodoThunk
+} from './todoSlice'
+import {
+  useState,
+  useCallback,
+  useEffect
+} from 'react'
 import todoSelectors from '../../redux/selectors';
 
 export default function TodoList() {
   const dispatch = useDispatch()
   const todoLists = useSelector(todoSelectors)
+  const [id, setId] = useState(null)
   const [todo, setTodo] = useState({
+    id: null,
     name: '',
-    prioriry: 'Medium',
+    priority: 'Medium',
     completed: false
   })
-  const [toggle, setToogle] = useState([])
+
+  useEffect(() => {
+    dispatch(getAllTodosThunk())
+  }, [])
 
   const handleAddTodo = () => {
-    dispatch(addTodo(todo))
+    dispatch(addTodoThunk({
+      ...todo,
+      id: Math.floor(Math.random() * 1000000)
+    }))
     setTodo(prev => ({
       ...prev,
       name: '',
-      prioriry: 'Medium'
+      priority: 'Medium',
+      id: null
     }))
-
-    const newTodoList = JSON.parse(localStorage.getItem('todoListsStorage')) ?? []
-    newTodoList.push({
-      name: todo.name,
-      prioriry: todo.prioriry,
-      completed: todo.completed
-    })
-    localStorage.setItem('todoListsStorage', JSON.stringify(newTodoList))
   }
 
   const handleChangeName = e => {
@@ -49,24 +58,17 @@ export default function TodoList() {
   const handleChangePrio = value => {
     setTodo(prev => ({
       ...prev,
-      prioriry: value
+      priority: value
     }))
   }
 
-  const handleToogleTodo = useCallback((id) => {
-    const checked = toggle.includes(id)
-    setToogle(prev => {
-      if (checked) {
-        return toggle.filter(togg => togg !== id)
-      }
-      return [...prev, id]
-    })
-  }, [toggle])
-
-  useEffect(() => {
-    dispatch(toogleTodo(toggle))
-  }, [toggle])
-
+  const a = useCallback((todoId) => {
+    if (id === todoId) {
+      setId(null)
+      return
+    }
+    setId(todoId)
+  }, [id])
 
   return (
     <Row style={{ height: 'calc(100% - 40px)' }}>
@@ -75,10 +77,11 @@ export default function TodoList() {
           <Todo
             key={index}
             name={todo.name}
-            prioriry={todo.prioriry}
+            priority={todo.priority}
             completed={todo.completed}
-            id={index}
-            onToogleTodo={handleToogleTodo}
+            id={todo.id}
+            aaa={a}
+            checkId={id}
           />
         )}
       </Col>
@@ -90,7 +93,7 @@ export default function TodoList() {
           />
           <Select
             defaultValue="Medium"
-            value={todo.prioriry}
+            value={todo.priority}
             onChange={handleChangePrio}
           >
             <Select.Option value='High' label='High'>

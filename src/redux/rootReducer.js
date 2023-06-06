@@ -4,7 +4,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 
 const rootReducer = combineReducers({
     filters: filterSlice,
-    todoLists: todoSlice
+    todos: todoSlice
 })
 
 

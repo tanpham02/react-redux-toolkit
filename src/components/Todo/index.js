@@ -1,34 +1,39 @@
-import { Row, Tag, Checkbox } from 'antd';
-import { useState } from 'react';
+import { Row, Tag, Checkbox } from 'antd'
+import { useState } from 'react'
+import { toggleTodoThunk } from '../TodoList/todoSlice'
+import { useDispatch } from 'react-redux'
 
 const priorityColorMapping = {
   High: 'red',
   Medium: 'blue',
   Low: 'gray',
-};
+}
 
-export default function Todo({ name, prioriry, completed, id, onToogleTodo }) {
-  const [checked, setChecked] = useState(completed);
+export default function Todo({ name, priority, completed, id, aaa, checkId }) {
+  const [checked, setChecked] = useState(completed)
+  const dispatch = useDispatch()
+
 
   const toggleCheckbox = () => {
-    setChecked(!checked);
-    onToogleTodo(id)
-  };
+    setChecked(!checked)
+    dispatch(toggleTodoThunk(id))
+    aaa(id)
+  }
 
   return (
     <Row
       justify='space-between'
       style={{
         marginBottom: 3,
-        ...(checked ? { opacity: 0.5, textDecoration: 'line-through' } : {}),
+        ...(completed ? { opacity: 0.5, textDecoration: 'line-through' } : {}),
       }}
     >
-      <Checkbox checked={checked} onChange={toggleCheckbox}>
+      <Checkbox checked={completed} onClick={toggleCheckbox}>
         {name}
       </Checkbox>
-      <Tag color={priorityColorMapping[prioriry]} style={{ margin: 0 }}>
-        {prioriry}
+      <Tag color={priorityColorMapping[priority]} style={{ margin: 0 }}>
+        {priority}
       </Tag>
     </Row>
-  );
+  )
 }
