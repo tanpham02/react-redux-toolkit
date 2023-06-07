@@ -3,3 +3,11 @@
 .ant-select-multiple .ant-select-selection-item {
   height: 27px;
 }
+
+#hover-show {
+  position: relative;
+}
+
+#hover-show:hover .icon {
+  visibility: visible !important;
+}

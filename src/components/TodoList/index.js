@@ -11,11 +11,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   getAllTodosThunk,
   addTodoThunk,
-  toggleTodoThunk
 } from './todoSlice'
 import {
   useState,
-  useCallback,
   useEffect
 } from 'react'
 import todoSelectors from '../../redux/selectors';
@@ -23,7 +21,6 @@ import todoSelectors from '../../redux/selectors';
 export default function TodoList() {
   const dispatch = useDispatch()
   const todoLists = useSelector(todoSelectors)
-  const [id, setId] = useState(null)
   const [todo, setTodo] = useState({
     id: null,
     name: '',
@@ -62,13 +59,6 @@ export default function TodoList() {
     }))
   }
 
-  const a = useCallback((todoId) => {
-    if (id === todoId) {
-      setId(null)
-      return
-    }
-    setId(todoId)
-  }, [id])
 
   return (
     <Row style={{ height: 'calc(100% - 40px)' }}>
@@ -80,8 +70,6 @@ export default function TodoList() {
             priority={todo.priority}
             completed={todo.completed}
             id={todo.id}
-            aaa={a}
-            checkId={id}
           />
         )}
       </Col>

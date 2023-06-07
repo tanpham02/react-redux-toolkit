@@ -38,6 +38,23 @@ const todoSlice = createSlice({
                 )
                 return state
             })
+
+            // editTodo
+            .addCase(editTodoThunk.fulfilled, (state, action) => {
+                state.todoLists.find(todo => (
+                    todo.id === action.payload.id && (todo.name = action.payload.name)
+                ))
+            })
+
+            // deleteTodo
+            .addCase(deleteTodoThunk.fulfilled, (state, action) => {
+                const index = state.todoLists.findIndex(todo => todo.id === action.payload)
+                if (index !== -1) {
+                    state.todoLists.splice(index, 1)
+                }
+                return state
+            })
+
     }
 })
 
@@ -74,9 +91,31 @@ const toggleTodoThunk = createAsyncThunk(
     }
 )
 
+const editTodoThunk = createAsyncThunk(
+    'todos/editTodoThunk',
+    async (todoEdit) => {
+        const res = await axios.put(`http://localhost:8001/todoLists/${todoEdit.id}`, {
+            ...todoEdit,
+            name: todoEdit.name
+        })
+        const output = await res.data
+        return output
+    }
+)
+
+const deleteTodoThunk = createAsyncThunk(
+    'todos/deleteTodoThunk',
+    async (id) => {
+        await axios.delete(`http://localhost:8001/todoLists/${id}`)
+        return id
+    }
+)
+
 export default todoSlice.reducer
 export {
     getAllTodosThunk,
     addTodoThunk,
-    toggleTodoThunk
+    toggleTodoThunk,
+    editTodoThunk,
+    deleteTodoThunk
 }

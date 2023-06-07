@@ -7,15 +7,15 @@
       "id": 113122
     },
     {
+      "id": 43964,
       "name": "Learn React",
       "priority": "High",
-      "completed": true,
-      "id": 243123
+      "completed": true
     },
     {
-      "id": 400400,
+      "id": 87180,
       "name": "Learn Redux",
-      "priority": "Low",
+      "priority": "High",
       "completed": false
     }
   ]
