@@ -11,12 +11,6 @@
       "name": "Learn React",
       "priority": "High",
       "completed": true
-    },
-    {
-      "id": 87180,
-      "name": "Learn Redux",
-      "priority": "High",
-      "completed": false
     }
   ]
 }

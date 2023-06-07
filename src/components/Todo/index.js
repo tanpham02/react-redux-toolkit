@@ -51,9 +51,9 @@ export default function Todo({
   }
 
   const handleRemoveTodo = () => {
-    // if (window.confirm(`Bạn chắc chắn muốn xóa nhiệm vụ ${name}?`) === true) {
+    if (window.confirm(`Bạn chắc chắn muốn xóa nhiệm vụ ${name}?`) === true) {
       dispatch(deleteTodoThunk(id))
-    // }
+    }
   }
 
   return (
