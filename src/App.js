@@ -7,6 +7,7 @@ const { Title } = Typography;
 
 function App() {
   console.log("--remote");
+  console.log('--recursive')
 
   return (
     <div
